@@ -157,6 +157,7 @@ while True:
 			except IndexError:
 				filename = input("Load File: ")
 				load(filename)
+			order = get_initiative_order()
 		# save the current roster
 		elif cmd == "save":
 			try:
@@ -172,6 +173,7 @@ while True:
 				name = command[2]		# name of the creature to rol
 				mod = command[3]		# modifier to their initiative
 				initiative(num, name, mod)
+				order = get_initiative_order()
 			except IndexError:
 				print("Not enough arguments!")
 		# roll hp
@@ -188,8 +190,8 @@ while True:
 			try:
 				command = command.split()
 				name = command[1]
-				initiative = command[2]
-				roster_add(name, initiative)
+				init = command[2]
+				roster_add(name, init)
 				order = get_initiative_order()
 			except IndexError:
 				print("Not enough arguments!")
@@ -244,4 +246,10 @@ while True:
 			print("INVALID COMMAND")
 	# catch an empty string
 	except IndexError:
-		print("INVALID COMMAND")
+		if turn == len(order) - 1:
+				turn = 0
+				print("TOP OF THE ROUND!")
+		else:
+			turn += 1
+		turn_name = order[turn]
+		print(turn_name + "'s turn!")

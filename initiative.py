@@ -150,6 +150,8 @@ while True:
 		# end combat, clearing the roster
 		elif cmd == "end":
 			roster = {}
+			order = get_initiative_order()
+			turn = 0
 		# load a saved roster
 		elif cmd == "load":
 			try:

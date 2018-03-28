@@ -15,8 +15,9 @@ def roll(dice):
 	dice = dice_pattern.match(dice)
 	num = int(dice[1])	# the number of dice to roll
 	die = int(dice[2])	# the maximum number on each die
-	mod = dice[3]		# the modifier to add to the roll
-	if not mod:
+	try: 
+		mod = dice[3]	# the modifier to add to the roll
+	except IndexError:
 		mod = "+0"
 	total = 0
 	for x in range(num):	# roll 'em
@@ -28,8 +29,9 @@ def d20(mod):
 	result = roll("1d20")
 	if result == 1:
 		print("CRITICAL FAILURE")
-	
-	return roll("1d20+" + str(mod))
+	elif result == 20:
+		print("CRITICAL SUCCESS!")
+	return result + mod
 
 # roll initiative for [number] of [name]s with a modifier of [mod]
 def initiative(number, name, mod):
@@ -110,6 +112,10 @@ def save(filename):
 # load a file
 def load(filename):
 	global roster
+	if filename == "help":			# list files that are able to be loaded
+		files = [f for f in os.listdir() if ".dnd" in f[-4:]]
+		for entry in files:
+			print(entry)
 	filename.replace(" ", "_")	# spaces in filenames. ick.
 	if ".dnd" != filename[-4:]:
 		filename += ".dnd"

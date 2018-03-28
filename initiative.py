@@ -1,6 +1,7 @@
 from random import randint		# Dice rolling
 from tabulate import tabulate		# Pretty-printing the roster
-import re, os				# Regexing "dice pattern" and listing files that can be loaded 
+from os import listdir			# List files that can be loaded
+from re import compile			# Regexing "dice pattern"
 
 roster = {}
 
@@ -8,7 +9,7 @@ roster = {}
 cmd_list = ["init", "roll", "end", "load", "save", "add", "roster", "hp", "sethp", "damage", "next", "start", "turn", "quit"]
 
 # finds strings that look like "4d5" or "10d6 + 7"
-dice_pattern = re.compile(r"(\d+)d(\d+)\s*([+\-]\s*\d+)?")
+dice_pattern = compile(r"(\d+)d(\d+)\s*([+\-]\s*\d+)?")
 
 # given a "XdY" string (with or without "+ Z"), rolls X dice that have Y sides and adds Z to the result 
 def roll(dice):
@@ -113,7 +114,7 @@ def save(filename):
 def load(filename):
 	global roster
 	if filename == "help":			# list files that are able to be loaded
-		files = [f for f in os.listdir() if ".dnd" in f[-4:]]
+		files = [f for f in listdir() if ".dnd" in f[-4:]]
 		for entry in files:
 			print(entry)
 	filename.replace(" ", "_")	# spaces in filenames. ick.

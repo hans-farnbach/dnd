@@ -9,17 +9,14 @@ roster = {}
 cmd_list = ["init", "roll", "end", "load", "save", "add", "roster", "hp", "sethp", "damage", "next", "start", "turn", "quit"]
 
 # finds strings that look like "4d5" or "10d6 + 7"
-dice_pattern = compile(r"(\d+)d(\d+)\s*([+\-]\s*\d+)?")
+dice_pattern = compile(r"(\d+)d(\d+)(\s*[+-]\s*\d+)?")
 
 # given a "XdY" string (with or without "+ Z"), rolls X dice that have Y sides and adds Z to the result 
 def roll(dice):
 	dice = dice_pattern.match(dice)
 	num = int(dice[1])	# the number of dice to roll
 	die = int(dice[2])	# the maximum number on each die
-	try: 
-		mod = dice[3]	# the modifier to add to the roll
-	except IndexError:
-		mod = "+0"
+	mod = dice[3]	# the modifier to add to the roll
 	total = 0
 	for x in range(num):	# roll 'em
 		total += randint(1,die)

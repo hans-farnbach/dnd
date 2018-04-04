@@ -17,6 +17,8 @@ def roll(dice):
 	num = int(dice[1])	# the number of dice to roll
 	die = int(dice[2])	# the maximum number on each die
 	mod = dice[3]	# the modifier to add to the roll
+	if not mod:
+		mod = "+0"
 	total = 0
 	for x in range(num):	# roll 'em
 		total += randint(1,die)
@@ -29,7 +31,7 @@ def d20(mod):
 		print("CRITICAL FAILURE")
 	elif result == 20:
 		print("CRITICAL SUCCESS!")
-	return result + mod
+	return result + int(mod)
 
 # roll initiative for [number] of [name]s with a modifier of [mod]
 def initiative(number, name, mod):
@@ -176,7 +178,7 @@ while True:
 			try:
 				command = command.split()
 				num = command[1]		# number of the creatures to roll
-				name = command[2]		# name of the creature to rol
+				name = command[2]		# name of the creature to roll
 				mod = command[3]		# modifier to their initiative
 				initiative(num, name, mod)
 				order = get_initiative_order()
@@ -215,6 +217,8 @@ while True:
 					dmg = command[3]
 				damage(name, dmg)
 				if len(roster) < len(order):
+					if turn == order.index(name.lower().capitalize()):
+						turn -= 1
 					order.remove(name.lower().capitalize())
 			except IndexError:
 				print("Not enough arguments!")
@@ -229,7 +233,7 @@ while True:
 				print("Not enough arguments!")
 		# move on to the next turn in the initiative order
 		elif cmd == "next":
-			if turn == len(order) - 1:
+			if turn >= len(order) - 1:
 				turn = 0
 				print("TOP OF THE ROUND!")
 			else:
@@ -252,7 +256,7 @@ while True:
 			print("INVALID COMMAND")
 	# catch an empty string
 	except IndexError:
-		if turn == len(order) - 1:
+		if turn >= len(order) - 1:
 				turn = 0
 				print("TOP OF THE ROUND!")
 		else:
